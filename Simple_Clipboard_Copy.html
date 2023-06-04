@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>클립보드</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+
+<h1> Bean으로 등록한 Message Properties 호출 명령어 클립보드 복사 </h1>
+<br>
+
+<span> Infomation</span>
+<div> 
+<button class='btn-primary' value='inf.0000'>정상적으로 처리되었습니다.</button>
+<button class='btn-primary' value='inf.0001'>{0}이 정상적으로 처리되었습니다.</button>
+<button class='btn-primary' value='inf.0002'>{0}이 정상적으로 {1}되었습니다.</button>
+<button class='btn-primary' value='inf.0003'>{0}가 정상적으로 처리되었습니다.</button>
+</div>
+
+
+<br>
+
+<span> Error</span>
+<div>
+<button class='btn-primary' value='err.0000'>등록되지 않은 메시지</button>
+<button class='btn-primary' value='err.0001'>DB 연결 에러</button>
+<button class='btn-primary' value='err.0002'>{0}을 처리하는데 실패하였습니다.</button>
+<button class='btn-primary' value='err.0003'>{0}를 처리하는데 실패하였습니다.</button>
+<button class='btn-primary' value='err.0004'>동일한 정보가 이미 등록되어 있습니다.</button>
+</div>
+
+<br>
+
+<span> Confirm</span>
+<div> 
+<button class='btn-primary' value='cfm.0000'>수정하시겠습니까?</button>
+<button class='btn-primary' value='cfm.0001'>삭제하시겠습니까?</button>
+<button class='btn-primary' value='cfm.0002'>저장하시겠습니까?</button>
+<button class='btn-primary' value='cfm.0003'>[{0} ]을(를) {1} 하시겠습니까?</button>
+<button class='btn-primary' value='cfm.0004'>삭제한 {0}의 하위 {0} 이(가) 존재합니다.\\n\\n하위 {0}도 함께 삭제하시겠습니까?</button>
+</div>
+
+<br>
+
+<span> Infomation</span>
+<div> 
+<button class='btn-primary' value='inf.1000'>상담이력을 입력하는 영역입니다.</button>
+<button class='btn-primary' value='inf.1001'>고객정보 저장 후 상담요약을 저장하시기 바랍니다.</button>
+<button class='btn-primary' value='inf.1002'>상담요약 저장 후 처리 가능합니다.</button>
+<button class='btn-primary' value='inf.1003'>제목을 입력하세요.</button>
+<button class='btn-primary' value='inf.1004'>상담유형을 선택하세요.</button>
+<button class='btn-primary' value='inf.1005'>상담유형을 선택해 주세요.</button>
+</div>
+
+<br>
+
+<span> Err2</span>
+<div> 
+<button class='btn-primary' value='err.1000'>선택된 항목이 없습니다.</button>
+<button class='btn-primary' value='err.1001'>선택된 고객이 없습니다.</button>
+<button class='btn-primary' value='err.1002'>선택한 이메일이 없습니다.</button>
+<button class='btn-primary' value='err.1003'>선택된 조직이 없습니다.</button>
+</div>
+
+<br>
+
+<span> Infomation</span>
+<div>
+<button class='btn-primary' value='cfm.1000'>선택하신 문서를 결재 하시겠습니까?</button>
+<button class='btn-primary' value='cfm.1001'>선택하신 문서를 반려 하시겠습니까?</button>
+<button class='btn-primary' value='cfm.1002'>선택하신 문서를 결재요청 하시겠습니까?</button>
+<button class='btn-primary' value='cfm.1003'>처리상태를 저장 하시겠습니까?</button>
+</div>
+
+<br>
+
+<span> Message</span>
+<div> 
+<button class='btn-primary' value='msg.0000'>불편한 사항이 있으면 관리자에게 문의해 주십시오.</button>
+<button class='btn-primary' value='msg.0001'>아이디</button>
+<button class='btn-primary' value='msg.0002'>비밀번호</button>
+<button class='btn-primary' value='msg.0003'>아이디를 입력해 주세요</button>
+<button class='btn-primary' value='msg.0004'>비밀번호를 입력해 주세요</button>
+</div>
+
+
+<script type="text/javascript">
+
+<!-- 메시지 클릭 시 해당 메시지 Messages Protperties에 선언된 Key 값으로 Controller / JSP 에 노출시킬 명령어 클립보드 복사하는 기능. -->
+<!--  HTML DOM 이 모두 로드 되었을 때. 즉, 랜더링 완료 시. -->
+document.addEventListener('DOMContentLoaded', function() {
+	<!-- 	btn-primary 클래스 Element 읽어오기 -->
+	let btn = document.getElementsByClassName('btn-primary');
+		
+	<!-- getElementsByClassName은 collection 형태로 가져오기에 모두 이벤트 등록 해줘야됨.(비효율적일수도...?)	 -->
+	for(let i = 0; i<btn.length; i ++){
+		<!-- 	클릭 이벤트 등록	 -->
+		btn[i].addEventListener('click', function(e){
+			<!--  Controller와 JSP에서 호출하는 방식이 다르다. (호출 하는 메서드는 직접 만들어야한다.)-->
+			var result = confirm("Controller입니까?");
+			<!-- Controller 라면  MessageUtil.getMessage() 의 메서드로 Bean으로 등록한 Messages Properties  값을 가져온다.-->
+			if(result){
+					copyToClipboard('MessageUtil.getMessage(\"' + e.target.value + '\")'); 					
+			}
+			<!--  JSP 라면 -->
+			else{
+				<!-- '{' 를 탐색한다. 이유는 {0} 과 같이 파라미터를 주면 그 위치에 파라미터 값이 들어가는 방식인데 이를 위하여. 	-->
+				if((e.target.innerText).includes('{')){
+					copyToClipboard('\"<spring:message code=\'' + e.target.value + '\' arguments=\'\"' + '+ ' + 'msg +' + '\"\'/>\"'); 
+				}
+				else{
+					copyToClipboard('<%=messageSimple("' + e.target.value + '")%>'); 	
+				}
+			}
+		});		
+	};
+	
+});
+
+<!-- 클립보드로 복사하는 기능. -->
+function copyToClipboard(val) {
+    var t = document.createElement("textarea");
+    
+    document.body.appendChild(t);
+    
+    t.value = val;
+    t.select();
+    
+    document.execCommand('copy');
+    document.body.removeChild(t);
+}
+
+</script>
+</body>
+</html>
